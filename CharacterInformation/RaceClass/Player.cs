@@ -8,7 +8,17 @@ namespace RaceClass
 {
     public class Player
     {
+
+        #region Private Variables
+
         private readonly int intSizeModifierMinimum = -8;
+        private readonly int intSizeModifierMaximum = 8;
+        private readonly int intBaseAttackBonusMinimum = 0;
+        private readonly int intSaveBonusMinimum = 0;
+        private readonly int intStatMinimum = 1;
+        private readonly int intLevelMinimum = 1;
+        private readonly int intAttackNumberModifier = 5;
+        private readonly int intMinimumNumberOfAttacks = 1;
         private int intStrength;
         private int intDexterity;
         private int intConstitution;
@@ -18,14 +28,20 @@ namespace RaceClass
         private int intFortitudeBonus;
         private int intReflexBonus;
         private int intWillpowerBonus;
+        private int intBaseAttackBonus;
         private int intArmorBonus;
         private int intShieldBonus;
         private int intEnhancementBonus;
         private int intDeflectionBonus;
         private int intNaturalArmor;
         private int intDodgeBonus;
-        private int intSizeModifier;
+        private int intSizeModifierArmor;
+        private int intSizeModifierCombat;
         private int intLevel;
+
+        #endregion
+
+        #region Public Variables
 
         public readonly int IntArmorClassBase = 10;
 
@@ -82,13 +98,13 @@ namespace RaceClass
             get { return intLevel; }
             set
             {
-                if (value >= 1)
+                if (value >= intLevelMinimum)
                 {
-                    intLevel = value;
+                    this.intLevel = value;
                 }
                 else
                 {
-                    intLevel = 1;
+                    this.intLevel = intLevelMinimum;
                 }
             }
         }
@@ -101,13 +117,13 @@ namespace RaceClass
             get { return intStrength; }
             set
             {
-                if (value >= 0)
+                if (value >= intStatMinimum)
                 {
-                    intStrength = value;
+                    this.intStrength = value;
                 }
                 else
                 {
-                    intStrength = 0;
+                    this.intStrength = intStatMinimum;
                 }
             }
         }
@@ -120,13 +136,13 @@ namespace RaceClass
             get { return intDexterity; }
             set
             {
-                if (value >= 0)
+                if (value >= intStatMinimum)
                 {
-                    intDexterity = value;
+                    this.intDexterity = value;
                 }
                 else
                 {
-                    intDexterity = 0;
+                    this.intDexterity = intStatMinimum;
                 }
             }
         }
@@ -141,11 +157,11 @@ namespace RaceClass
             {
                 if (value >= 0)
                 {
-                    intConstitution = value;
+                    this.intConstitution = value;
                 }
                 else
                 {
-                    intConstitution = 0;
+                    this.intConstitution = intStatMinimum;
                 }
             }
         }
@@ -158,13 +174,13 @@ namespace RaceClass
             get { return intIntelligence; }
             set
             {
-                if (value >= 0)
+                if (value >= intStatMinimum)
                 {
-                    intIntelligence = value;
+                    this.intIntelligence = value;
                 }
                 else
                 {
-                    intIntelligence = 0;
+                    this.intIntelligence = intStatMinimum;
                 }
             }
         }
@@ -177,13 +193,13 @@ namespace RaceClass
             get { return intWisdom; }
             set
             {
-                if (value >= 0)
+                if (value >= intStatMinimum)
                 {
-                    intWisdom = value;
+                    this.intWisdom = value;
                 }
                 else
                 {
-                    intWisdom = 0;
+                    this.intWisdom = intStatMinimum;
                 }
             }
         }
@@ -196,13 +212,13 @@ namespace RaceClass
             get { return intCharisma; }
             set
             {
-                if (value >= 0)
+                if (value >= intStatMinimum)
                 {
-                    intCharisma = value;
+                    this.intCharisma = value;
                 }
                 else
                 {
-                    intCharisma = 0;
+                    this.intCharisma = intStatMinimum;
                 }
             }
         }
@@ -264,6 +280,25 @@ namespace RaceClass
             }
         }
         
+        /// <summary>
+        /// The base attack bonus of the character.
+        /// </summary>
+        public int IntBaseAttackBonus
+        {
+            get { return intBaseAttackBonus; }
+            set
+            {
+                if(value >= intBaseAttackBonusMinimum)
+                {
+                    this.intBaseAttackBonus = value;
+                }
+                else
+                {
+                    this.intBaseAttackBonus = intBaseAttackBonusMinimum;
+                }
+            }
+        }
+
         /// <summary>
         /// Character's Armor Bonus
         /// </summary>
@@ -379,28 +414,73 @@ namespace RaceClass
         }
         
         /// <summary>
-        /// Character's size modifier.
+        /// Character's size modifier for Armor.
         /// </summary>
-        public int IntSizeModifier 
+        public int IntSizeModifierArmor 
         {
-            get { return intSizeModifier; }
+            get { return intSizeModifierArmor; }
             set
             {
-                if (value >= intSizeModifierMinimum)
+                if (value >= intSizeModifierMinimum && value <= intSizeModifierMaximum)
                 {
-                    intSizeModifier = value;
+                    intSizeModifierArmor = value;
                 }
                 else
                 {
-                    intSizeModifier = 0;
+                    intSizeModifierArmor = 0;
                 }
             }
         }
         
         /// <summary>
+        /// Character's size modifier for Combat.
+        /// </summary>
+        public int IntSizeModifierCombat
+        {
+            get { return intSizeModifierCombat; }
+            set
+            {
+                if(value >= intSizeModifierMinimum && value <= intSizeModifierMaximum)
+                {
+                    intSizeModifierCombat = value;
+                }
+                else
+                {
+                    intSizeModifierCombat = 0;
+                }
+            }
+        }
+
+        /// <summary>
         /// Character Languages Spoken
         /// </summary>
         public List<string> StrLanguages { get; set; }
+
+        /// <summary>
+        /// Weapons that a character is proficient with.
+        /// </summary>
+        public List<string> StrWeapons { get; set; }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Basic instantiation of this class.
+        /// </summary>
+        public Player()
+        {
+
+        }
+
+        /// <summary>
+        /// Instantiate player class with Character Name.
+        /// </summary>
+        /// <param name="strName">The Character's Name.</param>
+        public Player(string strName)
+        {
+            this.StrName = strName;
+        }
 
         /// <summary>
         /// Get the Ability Modifier Score for any Ability Score
@@ -411,25 +491,27 @@ namespace RaceClass
         {
             decimal decModifier = 0;
             int intModifier;
+            int intModifierMinimum = -5;
+
             decModifier = (intAbilityScore - 10) / 2;
             intModifier = (int)Math.Floor(decModifier);
-            if (intModifier >= -5)
+            if (intModifier >= intModifierMinimum)
             {
                 return intModifier;
             }
             else
             {
-                return -5;
+                return intModifierMinimum;
             }
         }
 
         /// <summary>
-        /// 
+        /// This gets the Combat Maneuver Bonus.
         /// </summary>
         /// <returns></returns>
         public int GetCombatManeuverBonus()
         {
-            int intCombatManeuverBonus = 0;
+            int intCombatManeuverBonus = this.IntBaseAttackBonus + this.IntSizeModifierCombat + GetAttributeBonus(this.IntStrength);
 
             return intCombatManeuverBonus;
         }
@@ -440,7 +522,7 @@ namespace RaceClass
         /// <returns></returns>
         public int GetCombatManeuverDefense()
         {
-            int intCombatManeuverDefense = 10;
+            int intCombatManeuverDefense = IntArmorClassBase + GetAbilityModifierBonus(this.IntStrength) + GetAbilityModifierBonus(this.IntDexterity) + this.IntSizeModifierCombat;
 
             return intCombatManeuverDefense;
         }
@@ -451,7 +533,7 @@ namespace RaceClass
         /// <returns></returns>
         public int GetArmorClass()
         {
-            int intArmorClass = IntArmorClassBase + IntArmorBonus + IntShieldBonus + IntEnhancementBonus + IntDeflectionBonus + IntNaturalArmor + IntDodgeBonus + IntSizeModifier + GetAbilityModifierBonus(IntDexterity);
+            int intArmorClass = IntArmorClassBase + IntArmorBonus + IntShieldBonus + IntEnhancementBonus + IntDeflectionBonus + IntNaturalArmor + IntDodgeBonus + IntSizeModifierArmor + GetAbilityModifierBonus(IntDexterity);
             return intArmorClass;
         }
 
@@ -487,6 +569,74 @@ namespace RaceClass
 
             return intFortitudeSavingThrow;
         }
+        
+        /// <summary>
+        /// Gets the number of attacks a player has.
+        /// </summary>
+        /// <returns></returns>
+        public int GetNumberOfAttacks()
+        {
+            int intNumberOfAttacks = this.IntBaseAttackBonus % intAttackNumberModifier;
+
+            if (intNumberOfAttacks < intMinimumNumberOfAttacks)
+            {
+                intNumberOfAttacks = intMinimumNumberOfAttacks;
+            }
+
+            return intNumberOfAttacks;
+        }
+
+        /// <summary>
+        /// This adds a language for the character.
+        /// </summary>
+        /// <param name="strLanguage"></param>
+        public void AddCharacterLanguage(string strLanguage)
+        {
+            if(!this.StrLanguages.Contains(strLanguage))
+            {
+                this.StrLanguages.Add(strLanguage);
+            }
+        }
+
+        /// <summary>
+        /// This removes a language for the character.
+        /// </summary>
+        /// <param name="strLanguage"></param>
+        public void RemoveCharacterLanguage(string strLanguage)
+        {
+            if(this.StrLanguages.Contains(strLanguage))
+            {
+                this.StrLanguages.Remove(strLanguage);
+            }
+        }
+
+        /// <summary>
+        /// Add a weapon to the character's proficiencies.
+        /// </summary>
+        /// <param name="strWeapon"></param>
+        public void AddCharacterWeapon(string strWeapon)
+        {
+            if(!this.StrWeapons.Contains(strWeapon))
+            {
+                this.StrWeapons.Add(strWeapon);
+            }
+        }
+
+        /// <summary>
+        /// Remove a weapon from the character's proficiencies.
+        /// </summary>
+        /// <param name="strWeapon"></param>
+        public void RemoveCharacterWeapon(string strWeapon)
+        {
+            if(this.StrWeapons.Contains(strWeapon))
+            {
+                this.StrWeapons.Remove(strWeapon);
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
 
         /// <summary>
         /// This gets the Attribute Bonuse for any given speciality stat.
@@ -515,5 +665,8 @@ namespace RaceClass
 
             return intAttributeBonus;
         }
+
+        #endregion
+
     }
 }
